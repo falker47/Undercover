@@ -10,6 +10,9 @@ const SUGGESTED_ROLES: Record<number, [number, number]> = {
   11: [2, 3], 12: [2, 3],
 }
 
+interface Slot { id: number; name: string }
+let nextSlotId = 3
+
 export default function SetupScreen() {
   const config = useGameStore(s => s.config)
   const setPlayerNames = useGameStore(s => s.setPlayerNames)
@@ -17,7 +20,7 @@ export default function SetupScreen() {
   const startGame = useGameStore(s => s.startGame)
   const goTo = useGameStore(s => s.goTo)
 
-  const [names, setNames] = useState<string[]>(['', '', ''])
+  const [slots, setSlots] = useState<Slot[]>([{ id: 0, name: '' }, { id: 1, name: '' }, { id: 2, name: '' }])
   const [mrWhiteCount, setMrWhiteCount] = useState(config.mrWhiteCount)
   const [infiltratoCount, setInfiltratoCount] = useState(config.infiltratoCount)
   const [manualOverride, setManualOverride] = useState(false)
@@ -31,8 +34,9 @@ export default function SetupScreen() {
       inputRefs.current[pendingFocus.current]?.focus()
       pendingFocus.current = null
     }
-  }, [names.length])
+  }, [slots.length])
 
+  const names = slots.map(s => s.name)
   const validNames = names.filter(n => n.trim().length > 0)
 
   // Auto-suggest roles based on player count (unless manually overridden)
@@ -58,31 +62,33 @@ export default function SetupScreen() {
 
   const impostorCount = mrWhiteCount + infiltratoCount
   const civilianCount = Math.max(0, validNames.length - impostorCount)
+  const hasDuplicates = new Set(validNames.map(n => n.trim().toLowerCase())).size < validNames.length
   const canStart =
     validNames.length >= 3 &&
     impostorCount >= 1 &&
-    impostorCount < validNames.length - 1
+    impostorCount < validNames.length - 1 &&
+    !hasDuplicates
 
   const addPlayer = () => {
-    if (names.length < 12) setNames([...names, ''])
+    if (slots.length < 12) setSlots([...slots, { id: nextSlotId++, name: '' }])
   }
 
   const removePlayer = (i: number) => {
-    if (names.length <= 3) return
-    setNames(names.filter((_, idx) => idx !== i))
+    if (slots.length <= 3) return
+    setSlots(slots.filter((_, idx) => idx !== i))
   }
 
   const updateName = (i: number, value: string) => {
-    const next = [...names]
-    next[i] = value
-    setNames(next)
+    const next = [...slots]
+    next[i] = { ...next[i], name: value }
+    setSlots(next)
   }
 
   const handleKeyDown = (i: number, e: React.KeyboardEvent) => {
     if (e.key !== 'Enter') return
     e.preventDefault()
-    if (i === names.length - 1) {
-      if (names.length < 12) {
+    if (i === slots.length - 1) {
+      if (slots.length < 12) {
         pendingFocus.current = i + 1
         addPlayer()
       }
@@ -118,9 +124,9 @@ export default function SetupScreen() {
         </h3>
         <div className="flex flex-col gap-2">
           <AnimatePresence initial={false}>
-            {names.map((name, i) => (
+            {slots.map((slot, i) => (
               <motion.div
-                key={i}
+                key={slot.id}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -130,7 +136,7 @@ export default function SetupScreen() {
                 <input
                   ref={el => { inputRefs.current[i] = el }}
                   type="text"
-                  value={name}
+                  value={slot.name}
                   onChange={e => updateName(i, e.target.value)}
                   onKeyDown={e => handleKeyDown(i, e)}
                   placeholder={`Giocatore ${i + 1}`}
@@ -138,7 +144,7 @@ export default function SetupScreen() {
                   style={{ userSelect: 'text', touchAction: 'auto' }}
                   maxLength={20}
                 />
-                {names.length > 3 && (
+                {slots.length > 3 && (
                   <button
                     onClick={() => removePlayer(i)}
                     className="text-slate-500 hover:text-rose-400 px-3 py-3 rounded-xl transition-colors"
@@ -151,7 +157,7 @@ export default function SetupScreen() {
             ))}
           </AnimatePresence>
         </div>
-        {names.length < 12 && (
+        {slots.length < 12 && (
           <button
             onClick={addPlayer}
             className="mt-2 text-indigo-400 hover:text-indigo-300 text-sm py-2 transition-colors"
@@ -191,8 +197,14 @@ export default function SetupScreen() {
         {impostorCount === 0 && (
           <p className="text-rose-400 text-xs mt-2">Aggiungi almeno 1 impostore</p>
         )}
-        {impostorCount > 0 && impostorCount >= validNames.length - 1 && (
-          <p className="text-rose-400 text-xs mt-2">Ci vogliono almeno 3 giocatori</p>
+        {impostorCount > 0 && validNames.length < 3 && (
+          <p className="text-rose-400 text-xs mt-2">Servono almeno 3 giocatori</p>
+        )}
+        {impostorCount > 0 && validNames.length >= 3 && impostorCount >= validNames.length - 1 && (
+          <p className="text-rose-400 text-xs mt-2">Servono almeno 2 civili</p>
+        )}
+        {hasDuplicates && (
+          <p className="text-rose-400 text-xs mt-2">Ci sono nomi duplicati</p>
         )}
       </div>
 

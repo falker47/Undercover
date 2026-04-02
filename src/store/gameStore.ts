@@ -93,7 +93,10 @@ export const useGameStore = create<GameState>((set, get) => ({
   startGame: () => {
     const { playerNames, config } = get()
     const shuffledPairs = shuffle(wordPairs)
-    const pair = shuffledPairs[0]
+    const raw = shuffledPairs[0]
+    const pair = Math.random() < 0.5
+      ? { ...raw, civilian: raw.undercover, undercover: raw.civilian }
+      : raw
     const players = assignRoles(playerNames, config, pair)
     set({
       players,
@@ -171,27 +174,26 @@ export const useGameStore = create<GameState>((set, get) => ({
       const mwId = eliminatedThisRound.id
       const newCorrectIds = [...mrWhiteCorrectIds, mwId]
 
-      set({ mrWhiteGuessResult: 'correct', mrWhiteCorrectIds: newCorrectIds })
-
       // Check if game is over
       const win = checkWinCondition(players)
       if (win) {
-        // calcFinalScores will include the MW 6pt in roundScores
         const correctSet = new Set(newCorrectIds)
         const { scores: finalScores, roundScores } = calcFinalScores(players, win, correctSet, scores)
-        set({ winner: win, scores: finalScores, roundScores, screen: 'result' })
+        set({ mrWhiteGuessResult: 'correct', mrWhiteCorrectIds: newCorrectIds, winner: win, scores: finalScores, roundScores })
+      } else {
+        set({ mrWhiteGuessResult: 'correct', mrWhiteCorrectIds: newCorrectIds })
       }
-      // If not over, GuessScreen shows "correct" + continue button
+      // GuessScreen shows feedback, then handleContinue navigates
     } else {
-      set({ mrWhiteGuessResult: 'wrong' })
-
       const win = checkWinCondition(players)
       if (win) {
         const correctSet = new Set(mrWhiteCorrectIds)
         const { scores: newScores, roundScores } = calcFinalScores(players, win, correctSet, scores)
-        set({ winner: win, scores: newScores, roundScores, screen: 'result' })
+        set({ mrWhiteGuessResult: 'wrong', winner: win, scores: newScores, roundScores })
+      } else {
+        set({ mrWhiteGuessResult: 'wrong' })
       }
-      // If not over, GuessScreen shows "wrong" + continue button
+      // GuessScreen shows feedback, then handleContinue navigates
     }
   },
 

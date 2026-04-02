@@ -25,12 +25,11 @@ const AVATAR_COLORS = [
 ]
 
 export default function VoteGrid({ players, votes, voterCount, onVote, disabled }: Props) {
-  const active = players.filter(p => !p.eliminated)
   const maxVotes = Math.max(0, ...Object.values(votes))
 
   return (
     <div className="grid grid-cols-2 gap-3 w-full">
-      {active.map((player, idx) => {
+      {players.map((player, idx) => {
         const voteCount = votes[player.id] ?? 0
         const pct = voterCount > 0 ? (voteCount / voterCount) * 100 : 0
         const isLeading = voteCount > 0 && voteCount === maxVotes
