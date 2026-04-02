@@ -8,6 +8,7 @@ interface Props {
   word: string | null
   role: Role
   onDone: () => void
+  isLast?: boolean
 }
 
 type Phase = 'waiting' | 'revealed' | 'hidden'
@@ -25,7 +26,7 @@ const ROLE_TEXT_COLORS: Record<Role, string> = {
   mrwhite: 'text-black',
 }
 
-export default function PrivacyReveal({ playerName, word, role, onDone }: Props) {
+export default function PrivacyReveal({ playerName, word, role, onDone, isLast }: Props) {
   const [phase, setPhase] = useState<Phase>('waiting')
   const [showHide, setShowHide] = useState(false)
   const [showParticles, setShowParticles] = useState(false)
@@ -167,7 +168,7 @@ export default function PrivacyReveal({ playerName, word, role, onDone }: Props)
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
         >
-          Prossimo giocatore →
+          {isLast ? 'Tutti pronti — Inizia!' : 'Prossimo giocatore →'}
         </motion.button>
       )}
     </div>
