@@ -37,7 +37,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: string |
               this.setState({ error: null })
               useGameStore.getState().resetGame()
             }}
-            className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-xl"
+            className="mt-4 glass-button px-4 py-2 rounded-xl"
           >
             Torna alla Home
           </button>
@@ -61,7 +61,7 @@ function QuitButton() {
     <>
       <button
         onClick={() => setConfirm(true)}
-        className="absolute top-4 right-4 z-50 w-9 h-9 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-sm font-bold transition-colors"
+        className="absolute top-4 right-4 z-50 w-9 h-9 rounded-full glass text-slate-400 hover:text-white flex items-center justify-center text-sm font-bold transition-colors"
         aria-label="Esci"
       >
         ✕
@@ -69,7 +69,7 @@ function QuitButton() {
 
       {confirm && (
         <div className="absolute inset-0 z-50 bg-black/70 flex items-center justify-center px-6">
-          <div className="bg-slate-800 rounded-3xl px-6 py-6 w-full max-w-xs flex flex-col gap-4">
+          <div className="glass-strong rounded-3xl px-6 py-6 w-full max-w-xs flex flex-col gap-4">
             <h3 className="text-white font-bold text-lg text-center">Uscire dalla partita?</h3>
             <p className="text-slate-400 text-sm text-center">I progressi della partita andranno persi.</p>
             <button
@@ -80,7 +80,7 @@ function QuitButton() {
             </button>
             <button
               onClick={() => setConfirm(false)}
-              className="w-full border-2 border-slate-600 hover:border-slate-400 text-slate-400 hover:text-white font-semibold py-3 rounded-2xl transition-colors"
+              className="w-full glass-button-secondary py-3 rounded-2xl transition-colors"
             >
               Annulla
             </button>
@@ -91,11 +91,27 @@ function QuitButton() {
   )
 }
 
+function AmbientBlobs() {
+  return (
+    <>
+      <div
+        className="fixed pointer-events-none -top-40 -left-40 w-[500px] h-[500px] opacity-100"
+        style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)' }}
+      />
+      <div
+        className="fixed pointer-events-none -bottom-40 -right-40 w-[500px] h-[500px] opacity-100"
+        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)' }}
+      />
+    </>
+  )
+}
+
 export default function App() {
   const screen = useGameStore(s => s.screen)
   const Screen = SCREENS[screen]
   return (
     <div className="h-full bg-slate-950 text-white flex flex-col max-w-md mx-auto overflow-hidden relative">
+      <AmbientBlobs />
       <ErrorBoundary>
         <QuitButton />
         <Screen />
