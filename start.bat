@@ -1,10 +1,10 @@
 @echo off
-title Mr. White - Dev Server
+title Undercover - Dev Server
 cd /d "%~dp0"
 
 echo.
 echo  ===================================
-echo   Mr. White - Avvio server locale
+echo   Undercover - Avvio server locale
 echo  ===================================
 echo.
 echo  [1] Dev server  (rapido, no PWA)

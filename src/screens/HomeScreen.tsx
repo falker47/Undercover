@@ -8,7 +8,7 @@ export default function HomeScreen() {
     <div className="flex flex-col items-center justify-center flex-1 gap-8 px-6 py-12">
       <div className="flex flex-col items-center gap-2">
         <div className="text-7xl">🕵️</div>
-        <h1 className="text-4xl font-black text-white text-center">Mr. White</h1>
+        <h1 className="text-4xl font-black text-white text-center">Undercover</h1>
         <p className="text-slate-400 text-center text-sm max-w-xs">
           Il gioco di deduzione sociale per feste.
           Chi è l'impostore tra voi?

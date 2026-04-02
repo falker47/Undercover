@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/undercover/',
   plugins: [
     react(),
     tailwindcss(),
@@ -11,15 +12,15 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/*.png'],
       manifest: {
-        name: 'Mr. White — Gioco di Deduzione',
-        short_name: 'Mr. White',
+        name: 'Undercover — Gioco di Deduzione',
+        short_name: 'Undercover',
         description: 'Il gioco di deduzione sociale per feste',
         theme_color: '#1e1b4b',
         background_color: '#0f0a1e',
         display: 'standalone',
         orientation: 'portrait',
-        scope: '/',
-        start_url: '/',
+        scope: '/undercover/',
+        start_url: '/undercover/',
         icons: [
           {
             src: '/icons/icon-192.png',
