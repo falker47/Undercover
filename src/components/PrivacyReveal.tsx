@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import type { Role } from '../store/types'
+import Particles from './Particles'
 
 interface Props {
   playerName: string
@@ -27,11 +28,13 @@ const ROLE_TEXT_COLORS: Record<Role, string> = {
 export default function PrivacyReveal({ playerName, word, role, onDone }: Props) {
   const [phase, setPhase] = useState<Phase>('waiting')
   const [showHide, setShowHide] = useState(false)
+  const [showParticles, setShowParticles] = useState(false)
 
   // Reset when player changes
   useEffect(() => {
     setPhase('waiting')
     setShowHide(false)
+    setShowParticles(false)
   }, [playerName])
 
   // Delay before showing "Ho visto" button
@@ -45,7 +48,11 @@ export default function PrivacyReveal({ playerName, word, role, onDone }: Props)
   }, [phase])
 
   const handleCardTap = () => {
-    if (phase === 'waiting') setPhase('revealed')
+    if (phase === 'waiting') {
+      setPhase('revealed')
+      setShowParticles(true)
+      setTimeout(() => setShowParticles(false), 1500)
+    }
   }
 
   const handleHide = () => {
@@ -59,7 +66,7 @@ export default function PrivacyReveal({ playerName, word, role, onDone }: Props)
     <div className="flex flex-col items-center gap-6 w-full">
       {/* Card */}
       <div
-        className="perspective-1000 w-full max-w-xs cursor-pointer"
+        className="relative perspective-1000 w-full max-w-xs cursor-pointer"
         style={{ height: '220px' }}
         onClick={handleCardTap}
       >
@@ -102,6 +109,28 @@ export default function PrivacyReveal({ playerName, word, role, onDone }: Props)
             )}
           </div>
         </div>
+
+        {/* Particles on reveal */}
+        {showParticles && (
+          <>
+            <Particles
+              colors={role === 'mrwhite'
+                ? ['#ffffff', '#e2e8f0', '#cbd5e1']
+                : ['#818cf8', '#6366f1', '#a5b4fc']
+              }
+              style="burst"
+              origin="center"
+            />
+            {role === 'mrwhite' && (
+              <motion.div
+                className="absolute inset-0 rounded-3xl bg-white pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.3, 0] }}
+                transition={{ duration: 0.6 }}
+              />
+            )}
+          </>
+        )}
       </div>
 
       {/* Buttons */}

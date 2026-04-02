@@ -1,6 +1,22 @@
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, useSpring, useTransform } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import RoleTag from '../components/RoleTag'
+import Particles from '../components/Particles'
+
+function AnimatedCounter({ value }: { value: number }) {
+  const spring = useSpring(0, { stiffness: 50, damping: 20 })
+  const display = useTransform(spring, v => Math.round(v))
+  const [displayValue, setDisplayValue] = useState(0)
+
+  useEffect(() => {
+    spring.set(value)
+    return display.on('change', v => setDisplayValue(v))
+  }, [value, spring, display])
+
+  if (value <= 0) return <span>0</span>
+  return <span>+{displayValue}</span>
+}
 
 export default function ResultScreen() {
   const players = useGameStore(s => s.players)
@@ -24,34 +40,83 @@ export default function ResultScreen() {
   const hasScoreHistory = leaderboard.some(([, s]) => s > 0)
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 px-5 py-6 gap-4 overflow-y-auto">
+    <div className="relative flex flex-col flex-1 min-h-0 px-5 py-6 gap-4 overflow-y-auto">
+      {/* Confetti / Particles */}
+      {isCiviliansWin && (
+        <Particles
+          count={20}
+          colors={['#818cf8', '#fbbf24', '#34d399', '#f43f5e', '#22d3ee']}
+          style="fall"
+          origin="top"
+        />
+      )}
+      {isLastTwo && (
+        <Particles
+          count={15}
+          colors={['#ef4444', '#f59e0b', '#dc2626', '#d97706']}
+          style="burst"
+          origin="center"
+        />
+      )}
+      {isPoisoned && (
+        <>
+          <Particles
+            count={15}
+            colors={['#ffffff', '#e2e8f0', '#cbd5e1']}
+            style="burst"
+            origin="center"
+          />
+          <motion.div
+            className="absolute inset-0 bg-white pointer-events-none z-40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.2, 0] }}
+            transition={{ duration: 0.6 }}
+          />
+        </>
+      )}
+
       {/* Winner banner */}
       {isCiviliansWin && (
-        <div className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-indigo-700 to-indigo-900 border border-white/10">
+        <motion.div
+          className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-indigo-700 to-indigo-900 border border-white/10"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        >
           <div className="text-5xl mb-2">🎉</div>
           <h2 className="text-2xl font-black text-white">I Civili vincono!</h2>
           <p className="text-indigo-200 text-sm mt-1">Tutti gli impostori sono stati eliminati.</p>
-        </div>
+        </motion.div>
       )}
 
       {isPoisoned && (
-        <div className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-slate-100 to-slate-300 border border-white/10">
+        <motion.div
+          className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-slate-100 to-slate-300 border border-white/10"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        >
           <div className="text-5xl mb-2">🕵️</div>
           <h2 className="text-2xl font-black text-slate-900">Mr. White vince!</h2>
           <p className="text-slate-600 text-sm mt-1">
             Ha indovinato la parola dei civili.
           </p>
-        </div>
+        </motion.div>
       )}
 
       {isLastTwo && (
-        <div className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-rose-700 to-rose-900 border border-white/10">
+        <motion.div
+          className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-rose-700 to-rose-900 border border-white/10"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        >
           <div className="text-5xl mb-2">😈</div>
           <h2 className="text-2xl font-black text-white">Gli impostori vincono!</h2>
           <p className="text-rose-200 text-sm mt-1">
             Sono sopravvissuti fino alla fine.
           </p>
-        </div>
+        </motion.div>
       )}
 
       {/* Word reveal */}
@@ -78,16 +143,17 @@ export default function ResultScreen() {
           Ruoli e punti partita
         </p>
         <div className="flex flex-col gap-2">
-          {players.map(player => {
+          {players.map((player, i) => {
             const pts = roundScores[player.name] ?? 0
             const isInfiltrateSurvivor = player.role === 'infiltrato' && !player.eliminated
             const isMwCorrect = player.role === 'mrwhite' && mrWhiteCorrectIds.includes(player.id)
             return (
-              <div
+              <motion.div
                 key={player.id}
-                className={`flex items-center justify-between rounded-2xl px-4 py-3 ${
-                  player.eliminated ? 'glass opacity-50' : 'glass'
-                }`}
+                className={`flex items-center justify-between glass rounded-2xl px-4 py-3 ${player.eliminated ? 'opacity-50' : ''}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: player.eliminated ? 0.5 : 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
               >
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   {player.eliminated && <span className="text-slate-500 text-sm">✕</span>}
@@ -106,10 +172,10 @@ export default function ResultScreen() {
                   <span className={`text-sm font-bold min-w-[32px] text-right ${
                     pts > 0 ? 'text-emerald-400' : 'text-slate-600'
                   }`}>
-                    {pts > 0 ? `+${pts}` : '0'}
+                    <AnimatedCounter value={pts} />
                   </span>
                 </div>
-              </div>
+              </motion.div>
             )
           })}
         </div>
@@ -133,8 +199,9 @@ export default function ResultScreen() {
             {leaderboard.map(([name, total], i) => {
               const isFirst = i === 0 && total > 0
               return (
-                <div
+                <motion.div
                   key={name}
+                  layout
                   className={`flex items-center justify-between px-4 py-3 ${
                     i < leaderboard.length - 1 ? 'border-b border-white/8' : ''
                   }`}
@@ -152,7 +219,7 @@ export default function ResultScreen() {
                   }`}>
                     {total} pt
                   </span>
-                </div>
+                </motion.div>
               )
             })}
           </div>
