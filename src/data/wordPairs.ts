@@ -33,6 +33,7 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Pallavolo', undercover: 'Basket', category: 'Sport' },
   { civilian: 'Surf', undercover: 'Skateboard', category: 'Sport' },
   { civilian: 'Bowling', undercover: 'Golf', category: 'Sport' },
+  { civilian: 'Boxe', undercover: 'Karate', category: 'Sport' },
 
   // ──── Tecnologia ────
   { civilian: 'Instagram', undercover: 'TikTok', category: 'Tecnologia' },
@@ -58,6 +59,7 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Oceano', undercover: 'Fiume', category: 'Luoghi' },
   { civilian: 'Lago', undercover: 'Stagno', category: 'Luoghi' },
   { civilian: 'Ponte', undercover: 'Tunnel', category: 'Luoghi' },
+  { civilian: 'Paradiso', undercover: 'Oasi', category: 'Luoghi' },
 
   // ──── Animali ────
   { civilian: 'Gatto', undercover: 'Cane', category: 'Animali' },
@@ -90,6 +92,7 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Piatto', undercover: 'Ciotola', category: 'Oggetti' },
   { civilian: 'Lampada', undercover: 'Candela', category: 'Oggetti' },
   { civilian: 'Collana', undercover: 'Braccialetto', category: 'Oggetti' },
+  { civilian: 'Ombrello', undercover: 'Ombrellone', category: 'Oggetti' },
 
   // ──── Professioni ────
   { civilian: 'Dottore', undercover: 'Infermiere', category: 'Professioni' },
@@ -155,4 +158,7 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Neve', undercover: 'Grandine', category: 'Scienza' },
   { civilian: 'Virus', undercover: 'Batterio', category: 'Scienza' },
   { civilian: 'Oro', undercover: 'Argento', category: 'Scienza' },
+
+  // ──── Concetti ────
+  { civilian: 'Lavoro', undercover: 'Hobby', category: 'Concetti' },
 ]
