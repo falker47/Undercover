@@ -47,6 +47,11 @@ export default function HomeScreen() {
       <div className="particle particle-4" />
       <div className="particle particle-5" />
       <div className="particle particle-6" />
+      <div className="particle particle-7" />
+      <div className="particle particle-8" />
+      <div className="particle particle-9" />
+      <div className="particle particle-10" />
+      <div className="particle particle-11" />
 
       {/* Spy icon */}
       <motion.div
