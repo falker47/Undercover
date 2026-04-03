@@ -5,6 +5,7 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Succo d\'arancia', undercover: 'Aranciata', category: 'Bevande' },
   { civilian: 'Caffè', undercover: 'Tè', category: 'Bevande' },
   { civilian: 'Birra', undercover: 'Vino', category: 'Bevande' },
+  { civilian: 'Cappuccino', undercover: 'Cioccolata calda', category: 'Bevande' },
 
   // ──── Cibo ────
   { civilian: 'Pizza', undercover: 'Focaccia', category: 'Cibo' },
@@ -20,6 +21,8 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Melanzana', undercover: 'Zucchina', category: 'Cibo' },
   { civilian: 'Patata', undercover: 'Pomodoro', category: 'Cibo' },
   { civilian: 'Salsiccia', undercover: 'Salame', category: 'Cibo' },
+  { civilian: 'Pane', undercover: 'Cracker', category: 'Cibo' },
+  { civilian: 'Nutella', undercover: 'Marmellata', category: 'Cibo' },
 
   // ──── Sport ────
   { civilian: 'Calcio', undercover: 'Rugby', category: 'Sport' },
@@ -35,6 +38,8 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Instagram', undercover: 'TikTok', category: 'Tecnologia' },
   { civilian: 'PlayStation', undercover: 'Xbox', category: 'Tecnologia' },
   { civilian: 'Facebook', undercover: 'Instagram', category: 'Tecnologia' },
+  { civilian: 'Smartphone', undercover: 'Tablet', category: 'Tecnologia' },
+  { civilian: 'Netflix', undercover: 'YouTube', category: 'Tecnologia' },
 
   // ──── Luoghi ────
   { civilian: 'Roma', undercover: 'Napoli', category: 'Luoghi' },
@@ -68,6 +73,7 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Giraffa', undercover: 'Zebra', category: 'Animali' },
   { civilian: 'Pipistrello', undercover: 'Gufo', category: 'Animali' },
   { civilian: 'Fantasma', undercover: 'Zombie', category: 'Fantasy' },
+  { civilian: 'Vampiro', undercover: 'Lupo mannaro', category: 'Fantasy' },
 
   // ──── Oggetti ────
   { civilian: 'Orologio', undercover: 'Sveglia', category: 'Oggetti' },
@@ -102,6 +108,8 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Harry Potter', undercover: 'Mago Merlino', category: 'Cinema' },
   { civilian: 'Dracula', undercover: 'Frankenstein', category: 'Cinema' },
   { civilian: 'Godzilla', undercover: 'King Kong', category: 'Cinema' },
+  { civilian: 'Pinocchio', undercover: 'Peter Pan', category: 'Cinema' },
+  { civilian: 'Shrek', undercover: 'Toy Story', category: 'Cinema' },
 
 
   // ──── Abbigliamento ────
@@ -109,6 +117,8 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Stivali', undercover: 'Sandali', category: 'Abbigliamento' },
   { civilian: 'Casco', undercover: 'Cappello', category: 'Abbigliamento' },
   { civilian: 'Sciarpa', undercover: 'Cravatta', category: 'Abbigliamento' },
+  { civilian: 'Guanti', undercover: 'Calzini', category: 'Abbigliamento' },
+  { civilian: 'Pigiama', undercover: 'Accappatoio', category: 'Abbigliamento' },
 
   // ──── Musica / Cultura ────
   { civilian: 'Picasso', undercover: 'Van Gogh', category: 'Cultura' },
@@ -123,6 +133,7 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Risiko', undercover: 'Monopoly', category: 'Giochi' },
   { civilian: 'Poker', undercover: 'Blackjack', category: 'Giochi' },
   { civilian: 'Puzzle', undercover: 'Cruciverba', category: 'Giochi' },
+  { civilian: 'Scacchi', undercover: 'Dama', category: 'Giochi' },
 
   // ──── Trasporti ────
   { civilian: 'Auto', undercover: 'Moto', category: 'Trasporti' },
