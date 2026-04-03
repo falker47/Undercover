@@ -278,13 +278,13 @@ export default function ResultScreen() {
                 <span className="text-rose-400 text-xs">Sicuro?</span>
                 <button
                   onClick={() => { resetScores(); setConfirmReset(false) }}
-                  className="text-xs text-rose-400 hover:text-rose-300 font-semibold transition-colors"
+                  className="px-4 text-sm bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 font-semibold rounded-lg transition-colors"
                 >
                   Si
                 </button>
                 <button
                   onClick={() => setConfirmReset(false)}
-                  className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                  className="px-4 text-sm bg-white/5 text-slate-400 hover:bg-white/10 rounded-lg transition-colors"
                 >
                   No
                 </button>

@@ -214,6 +214,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       mrWhiteCorrectIds: [],
       winner: null,
       roundScores: {},
+      scores: {},
     })
   },
 
