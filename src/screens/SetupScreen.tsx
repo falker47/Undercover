@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
+import BackButton from '../components/BackButton'
 
 const SUGGESTED_ROLES: Record<number, [number, number]> = {
   3: [1, 0], 4: [1, 0],
@@ -136,15 +137,9 @@ export default function SetupScreen() {
 
   return (
     <div className="flex flex-col flex-1 min-h-0 px-5 py-6 gap-5 overflow-y-auto">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <BackButton onClick={() => goTo('home')} />
         <h2 className="text-xl font-bold text-white">Nuova Partita</h2>
-        <button
-          onClick={() => goTo('home')}
-          className="text-slate-400 hover:text-white w-9 h-9 glass rounded-full flex items-center justify-center transition-colors text-lg"
-          aria-label="Indietro"
-        >
-          ✕
-        </button>
       </div>
 
       {/* Player names */}

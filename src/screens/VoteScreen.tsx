@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import type { Player } from '../store/types'
 import VoteGrid from '../components/VoteGrid'
+import BackButton from '../components/BackButton'
 import { vibrate } from '../utils/vibrate'
 
 export default function VoteScreen() {
@@ -98,12 +99,7 @@ export default function VoteScreen() {
     <div className="flex flex-col flex-1 min-h-0 px-5 py-6 gap-4 overflow-y-auto">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <button
-          onClick={() => goTo('round')}
-          className="text-slate-400 hover:text-white p-2 w-10 h-10 glass rounded-full flex items-center justify-center transition-colors"
-        >
-          ←
-        </button>
+        <BackButton onClick={() => goTo('round')} />
         <div className="flex-1">
           <h2 className="text-2xl font-black text-white">
             {tieBreak ? 'Pareggio! Ri-voto' : 'Chi eliminare?'}
