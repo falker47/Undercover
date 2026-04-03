@@ -217,50 +217,70 @@ export default function ResultScreen() {
 
       <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-      {/* Player list with round points */}
+      {/* Player list grouped by role, sorted by group round points */}
       <div>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
           Ruoli e punti partita
         </p>
-        <div className="flex flex-col gap-2">
-          {players.map((player, i) => {
-            const pts = roundScores[player.name] ?? 0
-            const isInfiltrateSurvivor = player.role === 'infiltrato' && !player.eliminated
-            const isMwCorrect = player.role === 'mrwhite' && mrWhiteCorrectIds.includes(player.id)
-            return (
-              <motion.div
-                key={player.id}
-                className={`flex items-center justify-between glass rounded-2xl px-4 py-3 ${player.eliminated ? 'opacity-50' : ''}`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: player.eliminated ? 0.5 : 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  {player.eliminated && <span className="text-slate-500 text-sm">✕</span>}
-                  <span className={`font-medium truncate ${player.eliminated ? 'line-through text-slate-500' : 'text-white'}`}>
-                    {player.name}
-                  </span>
-                  {isInfiltrateSurvivor && (isInfiltratoSurvived || isBothSurvived) && (
-                    <span className="text-amber-400 text-xs shrink-0">sopravvissuto!</span>
-                  )}
-                  {player.role === 'mrwhite' && !player.eliminated && isMwSurvived && (
-                    <span className="text-white text-xs shrink-0">sopravvissuto!</span>
-                  )}
-                  {isMwCorrect && (
-                    <span className="text-emerald-400 text-xs shrink-0">ha indovinato!</span>
-                  )}
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <RoleTag role={player.role} size="sm" />
-                  <span className={`text-sm font-bold min-w-[32px] text-right ${
-                    pts > 0 ? 'text-emerald-400' : 'text-slate-600'
-                  }`}>
-                    <AnimatedCounter value={pts} />
-                  </span>
-                </div>
-              </motion.div>
-            )
-          })}
+        <div className="flex flex-col gap-3">
+          {(() => {
+            const roles = [...new Set(players.map(p => p.role))]
+            const groupPoints = (role: typeof roles[number]) =>
+              players.filter(p => p.role === role).reduce((sum, p) => sum + (roundScores[p.name] ?? 0), 0)
+            const sorted = roles.sort((a, b) => groupPoints(b) - groupPoints(a))
+            let chipIndex = 0
+
+            return sorted.map((role, gi) => {
+              const group = players.filter(p => p.role === role)
+              return (
+                <motion.div
+                  key={role}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: gi * 0.08 }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <RoleTag role={role} size="sm" />
+                    <div className="flex-1 h-px bg-white/8" />
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {group.map(player => {
+                      const pts = roundScores[player.name] ?? 0
+                      const isInfiltrateSurvivor = player.role === 'infiltrato' && !player.eliminated
+                      const isMwCorrect = player.role === 'mrwhite' && mrWhiteCorrectIds.includes(player.id)
+                      const idx = chipIndex++
+                      return (
+                        <motion.div
+                          key={player.id}
+                          className={`flex items-center gap-2 glass rounded-xl px-3 py-2 ${player.eliminated ? 'opacity-50' : ''}`}
+                          initial={{ opacity: 0, x: -12 }}
+                          animate={{ opacity: player.eliminated ? 0.5 : 1, x: 0 }}
+                          transition={{ delay: gi * 0.08 + idx * 0.03 }}
+                        >
+                          {player.eliminated && <span className="text-slate-500 text-xs">✕</span>}
+                          <span className={`font-medium text-sm ${player.eliminated ? 'line-through text-slate-500' : 'text-white'}`}>
+                            {player.name}
+                          </span>
+                          {isInfiltrateSurvivor && (isInfiltratoSurvived || isBothSurvived) && (
+                            <span className="text-amber-400 text-[10px] shrink-0">sopravvissuto!</span>
+                          )}
+                          {player.role === 'mrwhite' && !player.eliminated && isMwSurvived && (
+                            <span className="text-white text-[10px] shrink-0">sopravvissuto!</span>
+                          )}
+                          {isMwCorrect && (
+                            <span className="text-emerald-400 text-[10px] shrink-0">ha indovinato!</span>
+                          )}
+                          <span className={`text-xs font-bold ${pts > 0 ? 'text-emerald-400' : 'text-slate-600'}`}>
+                            <AnimatedCounter value={pts} />
+                          </span>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </motion.div>
+              )
+            })
+          })()}
         </div>
       </div>
 
