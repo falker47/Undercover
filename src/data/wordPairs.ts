@@ -2,46 +2,31 @@ import type { WordPair } from '../store/types'
 
 export const wordPairs: WordPair[] = [
   // ──── Bevande ────
-  { civilian: 'Coca-Cola', undercover: 'Pepsi', category: 'Bevande' },
-  { civilian: 'Birra', undercover: 'Sidro', category: 'Bevande' },
   { civilian: 'Succo d\'arancia', undercover: 'Aranciata', category: 'Bevande' },
   { civilian: 'Caffè', undercover: 'Tè', category: 'Bevande' },
-  { civilian: 'Whiskey', undercover: 'Vodka', category: 'Bevande' },
   { civilian: 'Birra', undercover: 'Vino', category: 'Bevande' },
-  { civilian: 'Latte', undercover: 'Succo di frutta', category: 'Bevande' },
-  { civilian: 'Spritz', undercover: 'Negroni', category: 'Bevande' },
-  { civilian: 'Cappuccino', undercover: 'Latte macchiato', category: 'Bevande' },
-  { civilian: 'Limonata', undercover: 'Gazzosa', category: 'Bevande' },
 
   // ──── Cibo ────
   { civilian: 'Pizza', undercover: 'Focaccia', category: 'Cibo' },
-  { civilian: 'Spaghetti', undercover: 'Linguine', category: 'Cibo' },
-  { civilian: 'Panino', undercover: 'Tramezzino', category: 'Cibo' },
-  { civilian: 'Lasagne', undercover: 'Cannelloni', category: 'Cibo' },
-  { civilian: 'Hamburger', undercover: 'Hot dog', category: 'Cibo' },
-  { civilian: 'Cioccolato', undercover: 'Vaniglia', category: 'Cibo' },
+  { civilian: 'Hamburger', undercover: 'Patatine fritte', category: 'Cibo' },
+  { civilian: 'Lasagne', undercover: 'Carbonara', category: 'Cibo' },
   { civilian: 'Riso', undercover: 'Pasta', category: 'Cibo' },
   { civilian: 'Pollo', undercover: 'Manzo', category: 'Cibo' },
-  { civilian: 'Mela', undercover: 'Pera', category: 'Cibo' },
-  { civilian: 'Fragola', undercover: 'Lampone', category: 'Cibo' },
+  { civilian: 'Mela', undercover: 'Banana', category: 'Cibo' },
   { civilian: 'Cipolla', undercover: 'Aglio', category: 'Cibo' },
-  { civilian: 'Sale', undercover: 'Pepe', category: 'Cibo' },
+  { civilian: 'Sale', undercover: 'Zucchero', category: 'Cibo' },
   { civilian: 'Zucchero', undercover: 'Miele', category: 'Cibo' },
-  { civilian: 'Tiramisù', undercover: 'Panna cotta', category: 'Cibo' },
-  { civilian: 'Baguette', undercover: 'Ciabatta', category: 'Cibo' },
-  { civilian: 'Tortellini', undercover: 'Ravioli', category: 'Cibo' },
-  { civilian: 'Gelato', undercover: 'Torta', category: 'Cibo' },
-  { civilian: 'Cetriolo', undercover: 'Zucchina', category: 'Cibo' },
+  { civilian: 'Tiramisù', undercover: 'Gelato', category: 'Cibo' },
+  { civilian: 'Melanzana', undercover: 'Zucchina', category: 'Cibo' },
   { civilian: 'Patata', undercover: 'Pomodoro', category: 'Cibo' },
-  { civilian: 'Sushi', undercover: 'Pizza', category: 'Cibo' },
+  { civilian: 'Salsiccia', undercover: 'Salame', category: 'Cibo' },
 
   // ──── Sport ────
   { civilian: 'Calcio', undercover: 'Rugby', category: 'Sport' },
   { civilian: 'Tennis', undercover: 'Badminton', category: 'Sport' },
   { civilian: 'Sci', undercover: 'Snowboard', category: 'Sport' },
-  { civilian: 'Calcio', undercover: 'Basket', category: 'Sport' },
   { civilian: 'Scherma', undercover: 'Tiro con l\'arco', category: 'Sport' },
-  { civilian: 'Hockey', undercover: 'Calcio', category: 'Sport' },
+  { civilian: 'Hockey', undercover: 'Baseball', category: 'Sport' },
   { civilian: 'Pallavolo', undercover: 'Basket', category: 'Sport' },
   { civilian: 'Surf', undercover: 'Skateboard', category: 'Sport' },
   { civilian: 'Bowling', undercover: 'Golf', category: 'Sport' },
@@ -70,21 +55,19 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Ponte', undercover: 'Tunnel', category: 'Luoghi' },
 
   // ──── Animali ────
-  { civilian: 'Cane', undercover: 'Lupo', category: 'Animali' },
   { civilian: 'Gatto', undercover: 'Cane', category: 'Animali' },
-  { civilian: 'Aquila', undercover: 'Falco', category: 'Animali' },
+  { civilian: 'Aquila', undercover: 'Piccione', category: 'Animali' },
   { civilian: 'Elefante', undercover: 'Rinoceronte', category: 'Animali' },
   { civilian: 'Leone', undercover: 'Tigre', category: 'Animali' },
   { civilian: 'Pappagallo', undercover: 'Corvo', category: 'Animali' },
   { civilian: 'Delfino', undercover: 'Squalo', category: 'Animali' },
-  { civilian: 'Topo', undercover: 'Ratto', category: 'Animali' },
+  { civilian: 'Topo', undercover: 'Criceto', category: 'Animali' },
   { civilian: 'Lupo', undercover: 'Volpe', category: 'Animali' },
   { civilian: 'Medusa', undercover: 'Polpo', category: 'Animali' },
   { civilian: 'Pinguino', undercover: 'Gabbiano', category: 'Animali' },
   { civilian: 'Giraffa', undercover: 'Zebra', category: 'Animali' },
   { civilian: 'Pipistrello', undercover: 'Gufo', category: 'Animali' },
-  { civilian: 'Drago', undercover: 'Dinosauro', category: 'Animali' },
-  { civilian: 'Fantasma', undercover: 'Zombie', category: 'Animali' },
+  { civilian: 'Fantasma', undercover: 'Zombie', category: 'Fantasy' },
 
   // ──── Oggetti ────
   { civilian: 'Orologio', undercover: 'Sveglia', category: 'Oggetti' },
@@ -97,12 +80,10 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Specchio', undercover: 'Vetro', category: 'Oggetti' },
   { civilian: 'Sedia', undercover: 'Panchina', category: 'Oggetti' },
   { civilian: 'Cuscino', undercover: 'Coperta', category: 'Oggetti' },
-  { civilian: 'Padella', undercover: 'Pentola', category: 'Oggetti' },
   { civilian: 'Cucchiaio', undercover: 'Forchetta', category: 'Oggetti' },
   { civilian: 'Piatto', undercover: 'Ciotola', category: 'Oggetti' },
   { civilian: 'Lampada', undercover: 'Candela', category: 'Oggetti' },
   { civilian: 'Collana', undercover: 'Braccialetto', category: 'Oggetti' },
-  { civilian: 'Campeggio', undercover: 'Baita', category: 'Oggetti' },
 
   // ──── Professioni ────
   { civilian: 'Dottore', undercover: 'Infermiere', category: 'Professioni' },
@@ -118,27 +99,16 @@ export const wordPairs: WordPair[] = [
 
   // ──── Cinema / Personaggi ────
   { civilian: 'Superman', undercover: 'Batman', category: 'Cinema' },
-  { civilian: 'Star Wars', undercover: 'Star Trek', category: 'Cinema' },
   { civilian: 'Harry Potter', undercover: 'Mago Merlino', category: 'Cinema' },
-  { civilian: 'Sherlock Holmes', undercover: 'Hercule Poirot', category: 'Cinema' },
   { civilian: 'Dracula', undercover: 'Frankenstein', category: 'Cinema' },
-  { civilian: 'Homer Simpson', undercover: 'Peter Griffin', category: 'Cinema' },
   { civilian: 'Godzilla', undercover: 'King Kong', category: 'Cinema' },
-  { civilian: 'Game of Thrones', undercover: 'Il Signore degli Anelli', category: 'Cinema' },
 
-  // ──── Marchi / Brand ────
-  { civilian: 'McDonald\'s', undercover: 'Burger King', category: 'Brand' },
-  { civilian: 'Ferrari', undercover: 'Lamborghini', category: 'Brand' },
-  { civilian: 'Apple', undercover: 'Microsoft', category: 'Brand' },
 
   // ──── Abbigliamento ────
   { civilian: 'Camicia', undercover: 'Maglione', category: 'Abbigliamento' },
-  { civilian: 'Scarpe da ginnastica', undercover: 'Sandali', category: 'Abbigliamento' },
-  { civilian: 'Occhiali da sole', undercover: 'Occhiali da vista', category: 'Abbigliamento' },
-  { civilian: 'Stivali', undercover: 'Scarpe da ginnastica', category: 'Abbigliamento' },
+  { civilian: 'Stivali', undercover: 'Sandali', category: 'Abbigliamento' },
   { civilian: 'Casco', undercover: 'Cappello', category: 'Abbigliamento' },
   { civilian: 'Sciarpa', undercover: 'Cravatta', category: 'Abbigliamento' },
-  { civilian: 'Corona', undercover: 'Cappello', category: 'Abbigliamento' },
 
   // ──── Musica / Cultura ────
   { civilian: 'Picasso', undercover: 'Van Gogh', category: 'Cultura' },
@@ -160,9 +130,9 @@ export const wordPairs: WordPair[] = [
   { civilian: 'Aereo', undercover: 'Elicottero', category: 'Trasporti' },
   { civilian: 'Bicicletta', undercover: 'Monopattino', category: 'Trasporti' },
   { civilian: 'Barca', undercover: 'Sottomarino', category: 'Trasporti' },
-  { civilian: 'Ascensore', undercover: 'Scala mobile', category: 'Trasporti' },
+  { civilian: 'Ascensore', undercover: 'Scale', category: 'Trasporti' },
   { civilian: 'Metro', undercover: 'Taxi', category: 'Trasporti' },
-  { civilian: 'Crociera', undercover: 'Safari', category: 'Trasporti' },
+  { civilian: 'Crociera', undercover: 'Nave', category: 'Trasporti' },
   { civilian: 'Valigia', undercover: 'Zaino', category: 'Trasporti' },
 
   // ──── Scienza / Natura ────

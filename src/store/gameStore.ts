@@ -164,10 +164,30 @@ export const useGameStore = create<GameState>((set, get) => ({
     const { wordPair, players, scores, mrWhiteCorrectIds, eliminatedThisRound } = get()
     if (!wordPair || !eliminatedThisRound) return
 
-    const normalize = (s: string) =>
-      s.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    const STOP_WORDS = new Set(['di', 'da', 'del', 'della', 'delle', 'dei', 'degli',
+      'con', 'per', 'tra', 'fra', 'il', 'lo', 'la', 'le', 'gli', 'un', 'una', 'uno',
+      'the', 'of', 'and'])
 
-    const isCorrect = normalize(guess) === normalize(wordPair.civilian)
+    const normalize = (s: string) =>
+      s.trim().toLowerCase().normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/['\u2019\-]/g, '')
+        .replace(/\s+/g, ' ')
+
+    const normalizedGuess = normalize(guess)
+    const normalizedCivilian = normalize(wordPair.civilian)
+
+    const stripSpaces = (s: string) => s.replace(/\s/g, '')
+
+    let isCorrect = normalizedGuess === normalizedCivilian
+      || stripSpaces(normalizedGuess) === stripSpaces(normalizedCivilian)
+
+    // Fallback: match a significant keyword (>3 chars, no stop words)
+    if (!isCorrect && normalizedGuess.length > 3) {
+      const civilianWords = normalizedCivilian.split(' ')
+        .filter(w => w.length > 3 && !STOP_WORDS.has(w))
+      isCorrect = civilianWords.some(w => w === normalizedGuess)
+    }
 
     if (isCorrect) {
       // Track this MW — points will be awarded by calcFinalScores at game end
