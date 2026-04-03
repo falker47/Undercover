@@ -219,6 +219,9 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   rematch: () => {
+    const { playerNames } = get()
+    const rotated = [...playerNames.slice(1), playerNames[0]]
+    set({ playerNames: rotated })
     get().startGame()
   },
 
