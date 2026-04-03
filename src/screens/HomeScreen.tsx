@@ -50,7 +50,7 @@ export default function HomeScreen() {
 
       {/* Spy icon */}
       <motion.div
-        className="text-7xl z-10 spy-float"
+        className="text-7xl z-10"
         style={{ filter: 'drop-shadow(0 0 30px rgba(129,140,248,0.5))' }}
         variants={fadeUp}
       >
@@ -131,6 +131,17 @@ export default function HomeScreen() {
           </motion.button>
         )}
       </motion.div>
+
+      {/* Footer */}
+      <motion.a
+        href="https://falker47.github.io/Nexus-portfolio/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-5 z-10 text-xs text-slate-500 hover:text-slate-300 transition-colors tracking-wide"
+        variants={fadeUp}
+      >
+        &copy; {new Date().getFullYear()} Maurizio Falconi - falker47
+      </motion.a>
 
       <AnimatePresence>
         {showTutorial && <Tutorial onClose={() => setShowTutorial(false)} />}
