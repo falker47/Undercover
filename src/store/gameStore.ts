@@ -6,6 +6,25 @@ import { assignRoles } from '../utils/assignRoles'
 import { checkWinCondition } from '../utils/winCondition'
 import { isWordMatch } from '../utils/matchWord'
 
+function getMwGuessPoints(totalPlayers: number): number {
+  return totalPlayers <= 4 ? 4 : 3
+}
+
+function getMwSurvivalPoints(totalPlayers: number): number {
+  if (totalPlayers <= 3) return 3
+  if (totalPlayers <= 4) return 4
+  return 5
+}
+
+function getInfiltratoWinPoints(totalPlayers: number): number {
+  return totalPlayers <= 4 ? 3 : 5
+}
+
+function getInfiltratoPartialPoints(eliminatedInRound: number | null): number {
+  if (eliminatedInRound == null) return 0
+  return Math.min(3, Math.max(0, eliminatedInRound - 1))
+}
+
 function calcFinalScores(
   players: Player[],
   winner: 'civilians' | 'last_two',
@@ -15,21 +34,25 @@ function calcFinalScores(
   const roundScores: Record<string, number> = {}
   const scores = { ...prevScores }
   const mwPoisoned = mrWhiteCorrectIds.size > 0
+  const totalPlayers = players.length
 
   for (const p of players) {
     let pts = 0
 
     if (winner === 'civilians') {
       if (p.role === 'civile' && !mwPoisoned) pts = 2
-      // MW that guessed correctly already got 6pt live — show in roundScores
-      if (p.role === 'mrwhite' && mrWhiteCorrectIds.has(p.id)) pts = 6
+      if (p.role === 'mrwhite' && mrWhiteCorrectIds.has(p.id)) pts = getMwGuessPoints(totalPlayers)
+      // Infiltrato eliminato → punti parziali
+      if (p.role === 'infiltrato' && p.eliminated) pts = getInfiltratoPartialPoints(p.eliminatedInRound)
     }
 
     if (winner === 'last_two') {
-      if (p.role === 'mrwhite' && !p.eliminated) pts = 6
-      if (p.role === 'infiltrato' && !p.eliminated) pts = 5
-      // MW that guessed correctly (but were eliminated) already got 6pt live
-      if (p.role === 'mrwhite' && p.eliminated && mrWhiteCorrectIds.has(p.id)) pts = 6
+      if (p.role === 'mrwhite' && !p.eliminated) pts = getMwSurvivalPoints(totalPlayers)
+      if (p.role === 'infiltrato' && !p.eliminated) pts = getInfiltratoWinPoints(totalPlayers)
+      // MW eliminato ma ha indovinato
+      if (p.role === 'mrwhite' && p.eliminated && mrWhiteCorrectIds.has(p.id)) pts = getMwGuessPoints(totalPlayers)
+      // Infiltrato eliminato → punti parziali
+      if (p.role === 'infiltrato' && p.eliminated) pts = getInfiltratoPartialPoints(p.eliminatedInRound)
     }
 
     roundScores[p.name] = pts
@@ -153,11 +176,11 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   confirmElimination: () => {
-    const { eliminatedThisRound, players, wordPair, scores, mrWhiteCorrectIds } = get()
+    const { eliminatedThisRound, players, wordPair, scores, mrWhiteCorrectIds, round } = get()
     if (!eliminatedThisRound) return
 
     const updatedPlayers = players.map(p =>
-      p.id === eliminatedThisRound.id ? { ...p, eliminated: true } : p
+      p.id === eliminatedThisRound.id ? { ...p, eliminated: true, eliminatedInRound: round } : p
     )
     set({ players: updatedPlayers })
 
@@ -166,7 +189,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       return
     }
 
-    const win = checkWinCondition(updatedPlayers)
+    const win = checkWinCondition(updatedPlayers, players.length)
     if (win) {
       const correctSet = new Set(mrWhiteCorrectIds)
       const { scores: newScores, roundScores } = calcFinalScores(updatedPlayers, win, correctSet, scores)
@@ -188,7 +211,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       const newCorrectIds = [...mrWhiteCorrectIds, mwId]
 
       // Check if game is over
-      const win = checkWinCondition(players)
+      const win = checkWinCondition(players, players.length)
       if (win) {
         const correctSet = new Set(newCorrectIds)
         const { scores: finalScores, roundScores } = calcFinalScores(players, win, correctSet, scores)
@@ -198,7 +221,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       }
       // GuessScreen shows feedback, then handleContinue navigates
     } else {
-      const win = checkWinCondition(players)
+      const win = checkWinCondition(players, players.length)
       if (win) {
         const correctSet = new Set(mrWhiteCorrectIds)
         const { scores: newScores, roundScores } = calcFinalScores(players, win, correctSet, scores)

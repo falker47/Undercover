@@ -7,10 +7,13 @@ type Phase = 'privacy' | 'input' | 'result'
 
 export default function GuessScreen() {
   const eliminatedThisRound = useGameStore(s => s.eliminatedThisRound)
+  const players = useGameStore(s => s.players)
   const submitMrWhiteGuess = useGameStore(s => s.submitMrWhiteGuess)
   const mrWhiteGuessResult = useGameStore(s => s.mrWhiteGuessResult)
   const winner = useGameStore(s => s.winner)
   const nextRound = useGameStore(s => s.nextRound)
+
+  const mwGuessPoints = players.length <= 4 ? 4 : 3
 
   const [guess, setGuess] = useState('')
   const [phase, setPhase] = useState<Phase>('privacy')
@@ -149,7 +152,7 @@ export default function GuessScreen() {
           <div className="text-6xl">🎉</div>
           <div className="glass rounded-2xl px-6 py-4 text-center w-full" style={{ borderColor: 'rgba(52, 211, 153, 0.2)' }}>
             <p className="text-emerald-300 font-bold text-lg">Parola indovinata!</p>
-            <p className="text-white text-sm mt-1">{eliminatedThisRound?.name} guadagna 6 punti</p>
+            <p className="text-white text-sm mt-1">{eliminatedThisRound?.name} guadagna {mwGuessPoints} punti</p>
           </div>
           {!gameOver && (
             <div className="glass rounded-2xl px-6 py-4 text-center w-full" style={{ borderColor: 'rgba(251, 191, 36, 0.2)' }}>

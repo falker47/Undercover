@@ -253,6 +253,9 @@ export default function ResultScreen() {
                           {player.role === 'mrwhite' && !player.eliminated && isMwSurvived && (
                             <span className="text-white text-[10px] shrink-0">sopravvissuto!</span>
                           )}
+                          {player.role === 'infiltrato' && player.eliminated && pts > 0 && (
+                            <span className="text-amber-400/70 text-[10px] shrink-0">parziale</span>
+                          )}
                           {isMwCorrect && (
                             <span className="text-emerald-400 text-[10px] shrink-0">ha indovinato!</span>
                           )}
@@ -360,8 +363,8 @@ export default function ResultScreen() {
             >
               <div className="px-4 pb-3 flex flex-col gap-1 text-xs">
                 <span className="text-indigo-400">Civile: 2 pt (se tutti impostori eliminati e MW non indovina)</span>
-                <span className="text-white">Mr. White: 6 pt (se indovina la parola o sopravvive)</span>
-                <span className="text-amber-400">Infiltrato: 5 pt (se sopravvive fino alla fine)</span>
+                <span className="text-white">Mr. White: {players.length <= 4 ? '4' : '3'} pt (indovina) / {players.length <= 3 ? '3' : players.length <= 4 ? '4' : '5'} pt (sopravvive)</span>
+                <span className="text-amber-400">Infiltrato: {players.length <= 4 ? '3' : '5'} pt (sopravvive) / parziali se eliminato</span>
               </div>
             </motion.div>
           )}
