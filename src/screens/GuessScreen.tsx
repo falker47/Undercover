@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { springTap } from '../constants/animations'
@@ -14,8 +14,35 @@ export default function GuessScreen() {
 
   const [guess, setGuess] = useState('')
   const [phase, setPhase] = useState<Phase>('privacy')
+  const [timeLeft, setTimeLeft] = useState(60)
+  const timedOut = useRef(false)
 
   const gameOver = winner !== null
+
+  // Countdown timer — runs only during input phase
+  useEffect(() => {
+    if (phase !== 'input') return
+    const id = setInterval(() => {
+      setTimeLeft(t => {
+        if (t <= 1) {
+          clearInterval(id)
+          timedOut.current = true
+          return 0
+        }
+        return t - 1
+      })
+    }, 1000)
+    return () => clearInterval(id)
+  }, [phase])
+
+  // Auto-submit when time runs out
+  useEffect(() => {
+    if (timedOut.current && timeLeft === 0) {
+      timedOut.current = false
+      submitMrWhiteGuess('')
+      setPhase('result')
+    }
+  }, [timeLeft, submitMrWhiteGuess])
 
   const handleSubmit = () => {
     if (guess.trim().length === 0) return
@@ -45,6 +72,9 @@ export default function GuessScreen() {
           <p className="text-slate-500 text-center text-sm max-w-xs">
             Gli altri giocatori non devono guardare lo schermo!
           </p>
+          <p className="text-amber-400 text-sm font-semibold mt-1">
+            Avrai 60 secondi per indovinare la parola!
+          </p>
         </div>
         <motion.button
           onClick={() => setPhase('input')}
@@ -61,6 +91,14 @@ export default function GuessScreen() {
   if (phase === 'input') {
     return (
       <div className="flex flex-col items-center justify-center flex-1 px-5 py-8 gap-6">
+        <div className={`glass rounded-2xl px-6 py-3 text-center transition-colors ${timeLeft <= 10 ? 'border-rose-500/30' : 'border-amber-500/20'}`}
+          style={{ borderWidth: 1 }}
+        >
+          <span className={`text-4xl font-black tabular-nums ${timeLeft <= 10 ? 'text-rose-400' : 'text-amber-400'}`}>
+            {timeLeft}
+          </span>
+          <p className="text-slate-500 text-xs">secondi</p>
+        </div>
         <div className="flex flex-col items-center gap-3">
           <div className="text-6xl">🎯</div>
           <h2 className="text-2xl font-black text-white text-center">
