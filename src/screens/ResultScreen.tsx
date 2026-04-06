@@ -29,6 +29,10 @@ export default function ResultScreen() {
   const rematch = useGameStore(s => s.rematch)
   const resetScores = useGameStore(s => s.resetScores)
 
+  const config = useGameStore(s => s.config)
+  const hasMw = config.mrWhiteCount > 0
+  const hasInf = config.infiltratoCount > 0
+
   const [showLegend, setShowLegend] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
 
@@ -61,7 +65,7 @@ export default function ResultScreen() {
           origin="top"
         />
       )}
-      {isMwSurvived && (
+      {hasMw && isMwSurvived && (
         <>
           <Particles
             count={15}
@@ -77,7 +81,7 @@ export default function ResultScreen() {
           />
         </>
       )}
-      {isInfiltratoSurvived && (
+      {hasInf && isInfiltratoSurvived && (
         <Particles
           count={15}
           colors={['#fbbf24', '#f59e0b', '#d97706', '#b45309']}
@@ -85,7 +89,7 @@ export default function ResultScreen() {
           origin="center"
         />
       )}
-      {isBothSurvived && (
+      {hasMw && hasInf && isBothSurvived && (
         <Particles
           count={15}
           colors={['#ef4444', '#f59e0b', '#dc2626', '#d97706']}
@@ -93,7 +97,7 @@ export default function ResultScreen() {
           origin="center"
         />
       )}
-      {isPoisoned && (
+      {hasMw && isPoisoned && (
         <>
           <Particles
             count={15}
@@ -124,7 +128,7 @@ export default function ResultScreen() {
         </motion.div>
       )}
 
-      {isPoisoned && (
+      {hasMw && isPoisoned && (
         <motion.div
           className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-slate-100 to-slate-300 border border-white/10"
           initial={{ scale: 0.9, opacity: 0 }}
@@ -139,7 +143,7 @@ export default function ResultScreen() {
         </motion.div>
       )}
 
-      {isMwSurvived && (
+      {hasMw && isMwSurvived && (
         <motion.div
           className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-slate-100 to-slate-300 border border-white/10"
           initial={{ scale: 0.9, opacity: 0 }}
@@ -154,7 +158,7 @@ export default function ResultScreen() {
         </motion.div>
       )}
 
-      {isInfiltratoSurvived && (
+      {hasInf && isInfiltratoSurvived && (
         <motion.div
           className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-amber-600 to-amber-800 border border-white/10"
           initial={{ scale: 0.9, opacity: 0 }}
@@ -169,7 +173,7 @@ export default function ResultScreen() {
         </motion.div>
       )}
 
-      {isBothSurvived && (
+      {hasMw && hasInf && isBothSurvived && (
         <motion.div
           className="rounded-3xl px-6 py-6 text-center bg-gradient-to-br from-rose-700 to-rose-900 border border-white/10"
           initial={{ scale: 0.9, opacity: 0 }}
@@ -193,11 +197,15 @@ export default function ResultScreen() {
               <p className="text-xs text-indigo-400">Civili</p>
               <p className="text-white font-bold">{wordPair.civilian}</p>
             </div>
-            <div className="w-px bg-white/8" />
-            <div>
-              <p className="text-xs text-amber-400">Infiltrati</p>
-              <p className="text-white font-bold">{wordPair.undercover}</p>
-            </div>
+            {hasInf && (
+              <>
+                <div className="w-px bg-white/8" />
+                <div>
+                  <p className="text-xs text-amber-400">Infiltrati</p>
+                  <p className="text-white font-bold">{wordPair.undercover}</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -368,16 +376,24 @@ export default function ResultScreen() {
                 </div>
                 <div>
                   <div className="text-indigo-400 font-semibold">Civile — 2{'\u00A0'}pt</div>
-                  <div className="text-slate-500 mt-0.5">Se tutti gli impostori vengono eliminati (e Mr.{'\u00A0'}White non indovina)</div>
+                  <div className="text-slate-500 mt-0.5">
+                    {hasMw
+                      ? 'Se tutti gli impostori vengono eliminati (e Mr.\u00A0White non indovina)'
+                      : 'Se tutti gli impostori vengono eliminati'}
+                  </div>
                 </div>
-                <div>
-                  <div className="text-white font-semibold">Mr.{'\u00A0'}White — {players.length <= 4 ? '4' : '3'}{'\u00A0'}pt indovina / {players.length <= 3 ? '3' : players.length <= 4 ? '4' : '5'}{'\u00A0'}pt sopravvive</div>
-                  <div className="text-slate-500 mt-0.5">Se eliminato, può tentare di indovinare la parola dei civili</div>
-                </div>
-                <div>
-                  <div className="text-amber-400 font-semibold">Infiltrato — {players.length <= 4 ? '3' : '5'}{'\u00A0'}pt sopravvive</div>
-                  <div className="text-slate-500 mt-0.5">Se eliminato: +1{'\u00A0'}pt per ogni round dopo il primo (max 3{'\u00A0'}pt)</div>
-                </div>
+                {hasMw && (
+                  <div>
+                    <div className="text-white font-semibold">Mr.{'\u00A0'}White — {players.length <= 4 ? '4' : '3'}{'\u00A0'}pt indovina / {players.length <= 3 ? '3' : players.length <= 4 ? '4' : '5'}{'\u00A0'}pt sopravvive</div>
+                    <div className="text-slate-500 mt-0.5">Se eliminato, può tentare di indovinare la parola dei civili</div>
+                  </div>
+                )}
+                {hasInf && (
+                  <div>
+                    <div className="text-amber-400 font-semibold">Infiltrato — {players.length <= 4 ? '3' : '5'}{'\u00A0'}pt sopravvive</div>
+                    <div className="text-slate-500 mt-0.5">Se eliminato: +1{'\u00A0'}pt per ogni turno dopo il primo (max 3{'\u00A0'}pt)</div>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}
