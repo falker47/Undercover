@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
+import { getSurvivalThreshold } from '../utils/winCondition'
 import RoleTag from '../components/RoleTag'
 import Particles from '../components/Particles'
 import { useAnimatedValue } from '../hooks/useAnimatedValue'
@@ -339,12 +340,12 @@ export default function ResultScreen() {
       )}
 
       {/* Points legend (collapsible) */}
-      <div className="glass rounded-xl overflow-hidden">
+      <div className="shrink-0 rounded-xl overflow-hidden bg-white/[0.07] border border-white/10 border-l-2 border-l-indigo-500">
         <button
           onClick={() => setShowLegend(v => !v)}
-          className="w-full flex items-center justify-between px-4 py-3 text-slate-500 text-xs font-semibold"
+          className="w-full flex items-center justify-between px-4 py-3.5 text-slate-200 text-sm font-semibold"
         >
-          <span>ℹ Punteggi</span>
+          <span>ℹ Come funzionano i punteggi?</span>
           <motion.span
             animate={{ rotate: showLegend ? 180 : 0 }}
             transition={{ duration: 0.2 }}
@@ -361,10 +362,22 @@ export default function ResultScreen() {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="px-4 pb-3 flex flex-col gap-1 text-xs">
-                <span className="text-indigo-400">Civile: 2 pt (se tutti impostori eliminati e MW non indovina)</span>
-                <span className="text-white">Mr. White: {players.length <= 4 ? '4' : '3'} pt (indovina) / {players.length <= 3 ? '3' : players.length <= 4 ? '4' : '5'} pt (sopravvive)</span>
-                <span className="text-amber-400">Infiltrato: {players.length <= 4 ? '3' : '5'} pt (sopravvive) / parziali se eliminato</span>
+              <div className="px-4 pb-3 flex flex-col gap-2.5 text-xs">
+                <div className="text-slate-400">
+                  🎯 Soglia sopravvivenza: <span className="text-white font-semibold">ultimi {getSurvivalThreshold(players.length)}</span>
+                </div>
+                <div>
+                  <div className="text-indigo-400 font-semibold">Civile — 2{'\u00A0'}pt</div>
+                  <div className="text-slate-500 mt-0.5">Se tutti gli impostori vengono eliminati (e Mr.{'\u00A0'}White non indovina)</div>
+                </div>
+                <div>
+                  <div className="text-white font-semibold">Mr.{'\u00A0'}White — {players.length <= 4 ? '4' : '3'}{'\u00A0'}pt indovina / {players.length <= 3 ? '3' : players.length <= 4 ? '4' : '5'}{'\u00A0'}pt sopravvive</div>
+                  <div className="text-slate-500 mt-0.5">Se eliminato, può tentare di indovinare la parola dei civili</div>
+                </div>
+                <div>
+                  <div className="text-amber-400 font-semibold">Infiltrato — {players.length <= 4 ? '3' : '5'}{'\u00A0'}pt sopravvive</div>
+                  <div className="text-slate-500 mt-0.5">Se eliminato: +1{'\u00A0'}pt per ogni round dopo il primo (max 3{'\u00A0'}pt)</div>
+                </div>
               </div>
             </motion.div>
           )}

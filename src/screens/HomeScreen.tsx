@@ -88,7 +88,7 @@ export default function HomeScreen() {
       {/* Stats row */}
       <motion.div className="flex gap-6 z-10" variants={fadeUp}>
         <div className="text-center">
-          <div className="text-xl font-extrabold text-white">3-10</div>
+          <div className="text-xl font-extrabold text-white">3-12</div>
           <div className="text-[10px] text-slate-400 uppercase tracking-[1.5px]">Giocatori</div>
         </div>
         <div className="w-px bg-white/10 self-stretch" />
