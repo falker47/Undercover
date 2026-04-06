@@ -8,7 +8,7 @@ const STEPS = [
   { emoji: '🗳️', title: 'Votate', text: 'Dopo il giro di indizi, votate chi eliminare. In caso di parità si rivota o si procede con eliminazione casuale.' },
   { emoji: '🎯', title: 'Obiettivi', text: 'I Civili devono eliminare tutti gli impostori. Infiltrato e Mr.\u00A0White vincono se sopravvivono abbastanza a lungo \u2014 più siete, più turni dovranno resistere!' },
   { emoji: '🕵️', title: 'L\'ultima chance', text: 'Se Mr.\u00A0White viene eliminato, può tentare di indovinare la parola dei Civili. Se ci riesce, vince comunque!' },
-  { emoji: '🏆', title: 'Punteggi', text: 'Civili: 2\u00A0pt se eliminano tutti gli impostori. Mr.\u00A0White guadagna di più sopravvivendo in partite lunghe, di più indovinando in quelle brevi. L\'Infiltrato prende punti parziali per ogni turno sopravvissuto. Dettagli nella schermata risultati!' },
+  { emoji: '🏆', title: 'Punteggi', text: 'Civili: 2\u00A0pt se eliminano tutti gli impostori. Mr.\u00A0White guadagna di più sopravvivendo in partite lunghe, di più indovinando in quelle brevi. L\'Infiltrato prende punti parziali per ogni civile eliminato. Dettagli nella schermata risultati!' },
 ]
 
 const swipeThreshold = 50

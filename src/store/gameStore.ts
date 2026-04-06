@@ -20,9 +20,9 @@ function getInfiltratoWinPoints(totalPlayers: number): number {
   return totalPlayers <= 4 ? 3 : 5
 }
 
-function getInfiltratoPartialPoints(eliminatedInTurno: number | null): number {
-  if (eliminatedInTurno == null) return 0
-  return Math.min(3, Math.max(0, eliminatedInTurno - 1))
+function getInfiltratoPartialPoints(players: Player[]): number {
+  const eliminatedCivili = players.filter(p => p.role === 'civile' && p.eliminated).length
+  return Math.min(3, eliminatedCivili)
 }
 
 function calcFinalScores(
@@ -43,7 +43,7 @@ function calcFinalScores(
       if (p.role === 'civile' && !mwPoisoned) pts = 2
       if (p.role === 'mrwhite' && mrWhiteCorrectIds.has(p.id)) pts = getMwGuessPoints(totalPlayers)
       // Infiltrato eliminato → punti parziali
-      if (p.role === 'infiltrato' && p.eliminated) pts = getInfiltratoPartialPoints(p.eliminatedInTurno)
+      if (p.role === 'infiltrato' && p.eliminated) pts = getInfiltratoPartialPoints(players)
     }
 
     if (winner === 'last_two') {
@@ -52,7 +52,7 @@ function calcFinalScores(
       // MW eliminato ma ha indovinato
       if (p.role === 'mrwhite' && p.eliminated && mrWhiteCorrectIds.has(p.id)) pts = getMwGuessPoints(totalPlayers)
       // Infiltrato eliminato → punti parziali
-      if (p.role === 'infiltrato' && p.eliminated) pts = getInfiltratoPartialPoints(p.eliminatedInTurno)
+      if (p.role === 'infiltrato' && p.eliminated) pts = getInfiltratoPartialPoints(players)
     }
 
     roundScores[p.name] = pts

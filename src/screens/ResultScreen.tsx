@@ -391,7 +391,7 @@ export default function ResultScreen() {
                 {hasInf && (
                   <div>
                     <div className="text-amber-400 font-semibold">Infiltrato — {players.length <= 4 ? '3' : '5'}{'\u00A0'}pt sopravvive</div>
-                    <div className="text-slate-500 mt-0.5">Se eliminato: +1{'\u00A0'}pt per ogni turno dopo il primo (max 3{'\u00A0'}pt)</div>
+                    <div className="text-slate-500 mt-0.5">Se eliminato: +1{'\u00A0'}pt per ogni civile eliminato (max 3{'\u00A0'}pt)</div>
                   </div>
                 )}
               </div>
